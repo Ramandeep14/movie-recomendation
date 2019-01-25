@@ -1,0 +1,64 @@
+
+<html >
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+ <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script>
+  $(function() {
+    var availableTags = {{ list|safe }};
+    $( "#name" ).autocomplete({
+        minLength: 4,
+      source: availableTags
+    });
+  });
+  </script>
+
+
+</head>
+<body style="background: rgba(195, 187, 187, 0.53);">
+
+<div class="container text-center">
+  <h1>Spam Detector</h1>
+  <div class="row">
+    <div class="col-sm-6" style="background: rgba(185, 181, 181, 0.12);padding: 4%;">
+      <p><strong></strong></p><br>
+	  <h1>Enter your message</h1>
+
+<form action="{% url 'index' %}" method="post">
+    {% csrf_token %}
+    <div class="ui-widget">
+            <input type="text" id='name' name="name" />
+        </div>
+    <input type="submit" value="submit">
+</form>
+	  </div>
+</div>
+<div class="container text-center">
+{% if type == "2" %}
+<h3>The message you enter is </h3> {{ dataset }}
+<table>
+    <tr><th>result</th><th>string</th></tr>
+        {% for x, y in result %}
+        <tr><td>{{ x }}</td><td> <img src="{{ y }}"> </td></tr>
+        {% endfor %}
+</table>
+
+{% elif type == "3" %}
+
+{% endif %}
+
+</div>
+
+
+
+
+</div>
+</body>
+</html>
+

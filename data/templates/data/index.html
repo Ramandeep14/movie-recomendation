@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
+    <style media="screen" type="text/css">
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        main {
+            flex: 1 0 auto;
+        }
+        .flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+            $('select').material_select();
+        });
+    </script>{% block header %}{% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8">
+    <title>Explores the best for you!!</title>
+     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+ <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script>
+  $(function() {
+    var availableTags = {{ list|safe }};
+    $( "#name" ).autocomplete({
+        minLength: 4,
+      source: availableTags
+    });
+  });
+
+
+  	$(document).ready(function () {
+
+    // Build the chart
+    Highcharts.chart('myChart', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: 'Twitter Sentiment analysis of {{dataset}}'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: false
+                },
+                showInLegend: true
+            }
+        },
+        series: [{
+            name: 'tweets',
+            colorByPoint: true,
+            data: [ {
+                name: 'Positive',
+                y: {{ pos_count }},
+                sliced: true,
+                selected: true
+            }, {
+                name: 'Negative',
+                y: {{neg_count}}
+            }, {
+                name: 'Neutral',
+                y: {{neutral_count}}
+            }]
+        }]
+    });
+});
+  </script>
+
+</head>
+<body>
+<header>
+    <nav>
+        <div class="nav-wrapper" style="padding-left: 15px;">
+            <a href="/" class="brand-logo left">Explores the best for you!!</a>
+            <form action="{% url 'index' %}" method="post">
+        <div class="input-field right">
+            {% csrf_token %}
+          <input id='name' name="name" type="search" required style="width: 330px;height: 63px;background: #f77378a6;margin:  0px;">
+          <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+          <i class="material-icons">close</i>
+        </div>
+      </form>
+        </div>
+    </nav>
+</header>
+<main>
+{% block body %}
+
+	{% if type == "3" %}
+         <div class="row">
+        <!-- <div id="input_hastag" class="col s6 card-panel hoverable"  style=" height: 550px;  margin: 0 auto">
+		<h4 style="text-align: center;margin-bottom: 100px; margin-top: 42px;">Enter Movie here</h4>
+            <form action="{% url 'index' %}" method="post">
+			<div class="input-field col s8">
+                 {% csrf_token %}
+                <div class="ui-widget">
+                <input class="validate" type="text" id='name' name="name" />
+                </div>
+            </div>
+                </form>
+		<button class="btn waves-effect waves-light" type="submit" name="action" style="background-color: #006dbf;border-radius: 63px;width: 30%;height: 70px;font-size: 22px;">Recommend
+		</button>
+        </div> -->
+        <div class="col s12" >
+        <div class=" "  style=" height: 550px;  margin: 0 auto">
+            <h4>Movie Recommendation System</h4>
+			<p class="flow-text" style="    font-size: 17px;line-height: 23px;text-align: justify;">
+			Movie Recommendation System is the process of determining whether a piece of writing
+			(product/movie review, tweet, etc.) is positive, negative or neutral. It can be used to identify
+			the customer or follower's attitude towards a brand through the use of variables such as context,
+			tone, emotion, etc. Marketers can use sentiment analysis to research public opinion of their company
+			and products, or to analyze customer satisfaction. Organizations can also use this analysis to gather
+			critical feedback about problems in newly released products.</p>
+
+	<img src="http://www.softwareadvice.com/resources/wp-content/uploads/The-Best-Free-Tools-for-Twitter-Sentiment-Analysis-Hero.png"style="width: 100%;">
+
+			<blockquote style="font-size: 16px;line-height: 20px;">
+      This project  entitled “Explores the best for you -It's Movie Recommendation System and feedback analysis”.  
+    </blockquote>
+	</div>
+        </div>
+         </div>
+{% endif %}
+
+		{% if type == "2" %}
+            <div class="row" style="margin-bottom: 0px;">
+            <div class="col s7 card-panel hoverable" style=" height: 350px;margin-bottom: 0px;">
+
+                <div class="col s4" style="height: 100%;padding: 20px;">
+                <img src="{{ image_url }}" style="height: 100%">
+                </div>
+                <div class="col s8" style="text-align: center;">
+                    <h3 style="text-align: left;">{{dataset}}</h3>
+                    <p  class="flow-text" style="font-size: 17px;text-align: justify;">
+
+                {{img_des}}
+
+                    </p>
+                    <a href="{{ movieurl }}" target="_blank" ><img src="http://fontslogo.com/wp-content/uploads/2013/02/300px-IMDB.png" height="60px"></a>
+                </div>
+
+            </div>
+            <div class="col s5 card-panel hoverable" style=" margin-bottom: 0px;padding: 15px;">
+                <div class="" id="myChart" style=" height: 320px;  margin: 0 auto"></div>
+            </div>
+            </div>
+            <div class="row flex">
+          {% for x, z,y in result %}
+              <div class="col s2 card-panel hoverable" style="text-align: center;padding: 10px 0px;">
+              <img src="{{ y }}" style="width: 70%;"><br>
+              {{ x }}<br>
+              IMDB Score:{{ z }}
+              </div>
+        {% endfor %}
+            </div>
+
+
+		{% endif %}
+
+{% endblock %}
+</main>
+
+</body>
+</html>

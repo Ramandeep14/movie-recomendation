@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block header %}
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script>
+	$(document).ready(function () {
+
+    // Build the chart
+    Highcharts.chart('myChart', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: 'Twitter Sentiment Analusis of {{tag}}'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: false
+                },
+                showInLegend: true
+            }
+        },
+        series: [{
+            name: 'tweets',
+            colorByPoint: true,
+            data: [ {
+                name: 'Positive',
+                y: {{0}},
+                sliced: true,
+                selected: true
+            }, {
+                name: 'Negative',
+                y: {{0}}
+            }, {
+                name: 'Nutral',
+                y: {{0}}
+            }]
+        }]
+    });
+});
+	</script>
+
+
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+		<div class="col s6" >
+            <div id="myChart" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+			</div>
+		<div class="col s6" >
+            
+			</div>
+    </div>
+{% endblock %}
